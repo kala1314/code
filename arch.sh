@@ -1,10 +1,10 @@
 #!/bin/bash
 function Pacman(){
 	function ustc(){
-		sudo "cat>>/etc/pacman.conf<<EOF
+		sudo sh -c "cat>>/etc/pacman.conf<<EOF
 [archlinuxcn]
 SigLevel = Optional TrustAll
-Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/\$arch
 EOF"
 		sudo pacman -Syy 
 }
@@ -63,7 +63,10 @@ sed -i "s/kala/$u/" /home/$u/.local/share/applications/qq.desktop
 mv qq ~/.wine/qq
 }
 	echo "开始安装QQ"
+	
 	#检查仓库
+	sudo sed -i 's/\#\[multilib\]/\[multilib\]/' /etc/pacman.conf
+	sudo sed -i '95a Include = /etc/pacman.d/mirrorlist' /etc/pacman.conf
 	yt=`cat /etc/pacman.conf | tail -n 3 | grep \#`
 	if [ "$yt" == "" ];then
 		echo "有第三方仓库，即将进行安装"
@@ -71,7 +74,7 @@ mv qq ~/.wine/qq
 		sudo sh -c "cat>>/etc/pacman.conf<<EOF 
 [archlinuxcn]
 SigLevel = Optional TrustAll
-Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/\$arch
 EOF"
 		sudo pacman -Syy	
 	fi
@@ -264,9 +267,9 @@ function beying(){
 
 echo "=================================================="
 echo "                支持安装的应用程序：                                               "
-echo "                   1.wine QQ                      " 
-echo "                   2.谷歌浏览器                                                       " 
-echo "                   3.网易云音乐                                                       "
+echo "                   1.wine QQ              " 
+echo "                   2.谷歌浏览器                                                " 
+echo "                   3.网易云音乐                                            "
 echo "                   4.virtualbox                   "
 echo "                   5.Arc主题及numix                "
 echo "                   6.v2ray启动脚本                                              "
